@@ -19,19 +19,19 @@ Severity shows how much a risk could affect the project or a production line if 
 
 | ID | Risk | Severity | What could happen | Current approach |
 | --- | --- | --- | --- | --- |
-| R6 | Valkey is too slow for images with several high-resolution cameras | Medium | Pipelines are delayed and miss deadlines | Measure on each supported platform. Memory-mapped files on tmpfs are the fallback, behind the same interface. |
+| R6 | Valkey is too slow for images with several high-resolution cameras | Medium | Pipelines are delayed and miss deadlines | Measure on all supported hardware. Memory-mapped files on tmpfs are the fallback, behind the same interface. |
 | R7 | Smaller Jetson devices can't hold the full system | High | Too little memory for Valkey, Postgres, images, and models together | Measure early, and offer lighter options or require larger devices |
 | R8 | Postgres and image writes wear out storage | Medium | Devices fail early in the field | Measure write volumes, and tune retention and telemetry |
 | R9 | Several cameras exceed shared network bandwidth | Medium | Images are dropped during trigger bursts | Test trigger groups, and include bandwidth in device resource checks |
 | R24 | Supporting only NVIDIA GPUs limits adoption | Low | People with CPU-only, Intel, or AMD systems can't use OpenGadget, and CI needs a GPU to test real inference | Reassess if there's demand, and run most automated tests with emulated sensors and test pipelines that don't need a GPU |
-| R25 | Behavior differs between Jetson and x86 | Medium | A pipeline or model tested on one platform performs differently on the other, or the test burden grows with each platform | Hide hardware differences in base images and the model manager, and run conformance and performance tests on both |
+| R25 | Behavior differs between Jetson and x86 | Medium | A pipeline or model tested on one type of hardware performs differently on the other, or the test burden grows with each type | Hide hardware differences in base images and the model manager, and run conformance and performance tests on both |
 | R10 | Inaccurate clocks on plant networks | Low | Performance and traceability data becomes misleading | Use a monotonic clock for durations. Evaluate time synchronization and PTP for cameras. |
 
 ## Building and updating
 
 | ID | Risk | Severity | What could happen | Current approach |
 | --- | --- | --- | --- | --- |
-| R11 | Packages are hard to build for every supported platform from a typical computer | High | The core install flow doesn't work on a Mac or x86 machine, especially for Jetson GPU libraries | Test early, and decide whether packages contain native binaries, Docker images, or a mix |
+| R11 | Packages are hard to build for all supported hardware from a typical computer | High | The core install flow doesn't work on a Mac or x86 machine, especially for Jetson GPU libraries | Test early, and decide whether packages contain native binaries, Docker images, or a mix |
 | R12 | Platform updates break generated services | Medium | Repositories made from a template don't share Git history with OpenGadget, and an update could change rules that existing services no longer meet | A versioned update command that runs conformance tests against `inspection/`. How it handles failures is still open. |
 | R13 | Using several languages increases what we maintain | Medium | Base code must be provided and kept in step across languages | Choose languages per component, keep contracts language-independent, and test all services against the same conformance suite |
 | R14 | Agents don't read the standard file locations | Medium | A new repository doesn't load `AGENTS.md` or `.agents/skills/` in some agents, and hooks may need connecting separately for each agent | Test with each agent, and add minimal pointers where needed. The command-line tool and CI enforce the rules regardless of hooks. |
