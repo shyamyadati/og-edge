@@ -1,2 +1,3 @@
-# og-edge
-The "Original Gadget" Edge
+# OpenGadget
+
+The "OpenGadget" edge system.
